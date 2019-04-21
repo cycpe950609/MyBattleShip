@@ -8,10 +8,11 @@ namespace TA
 {
     class BattleShipGame
     {
+    public:
         BattleShipGame(
             std::size_t width,
             std::size_t height,
-            std::chrono::milliseconds runtime_limit
+            std::chrono::milliseconds runtime_limit = {0}
         ):
             m_width(width),
             m_height(height),

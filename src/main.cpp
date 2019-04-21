@@ -4,14 +4,16 @@
 #include <iostream>
 #include <memory>
 
+#include <BattleShipGame/Game.h>
 #include <BattleShipGame/Wrapper/Implement.h>
+
 
 bool load(const char *libpath, Content &table)
 {
     table.handle = dlopen(libpath, RTLD_LAZY);
 
     if( !table.handle ) {
-        std::cout << ".so open:"<< dlerror();
+        std::cout << ".so open:" << dlerror();
         return false;
     }
 
@@ -47,6 +49,8 @@ int main()
 
     std::cout<< P1.sum() << std::endl;
     std::cout<< P2.sum() << std::endl;
+
+    BattleShipGame bgame(10,10);
 
     /*std::future_status status;
     std::future<int> val = std::async(std::launch::async, sum, 1);

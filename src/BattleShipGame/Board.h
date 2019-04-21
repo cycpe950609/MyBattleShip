@@ -4,17 +4,7 @@
 
 namespace TA
 {
-    struct Car
-    {
-        /* 
-            it mean car hold those position b[i][j]
-            for i = x, x+1, ..., x+size-1
-            for j = y, y+1, ..., y+size-1
-        */
-        std::size_t size;
-        std::size_t x;
-        std::size_t y;
-    };
+    
 
     class Board
     {
@@ -22,8 +12,8 @@ namespace TA
         enum class State
         {
             Unknown,
-            Land,
-            AttackedCar
+            Empty,
+            Hit
         };
         Board(std::size_t width, std::size_t height)
             :m_width(width)
@@ -33,6 +23,13 @@ namespace TA
 
         std::size_t width()  const { return m_width;  }
         std::size_t height() const { return m_height; }
+        auto& operator[](int x) { return m_board[x]; }
+        State& at(int x,int y) { return m_board[x][y]; }
+
+        bool isAlloToHit(int x, int y) const
+        {
+            return m_board[x][y] == State::Unknown;
+        }
     private:
         std::size_t m_width;
         std::size_t m_height;

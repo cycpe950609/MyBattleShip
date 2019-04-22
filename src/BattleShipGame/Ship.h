@@ -4,6 +4,13 @@
 
 namespace TA
 {
+    enum class ShipState
+    {
+        Available,
+        Hit,
+        Sink
+    };
+
     struct Ship
     {
         /* 
@@ -16,20 +23,7 @@ namespace TA
         std::size_t x;
         std::size_t y;
 
-        bool hit;
-
-        bool isInner(int _x, int _y) const {
-            return x <= _x && _x < x + size && y <= _y && _y < y + size;
-        }
-        bool isOutOfBound(int w, int h) const {
-            
-        }
-        bool setNewPosition();
-    };
-
-    class ShipHolder
-    {
-        std::vector<Ship>
+        ShipState state;
     };
 }
 

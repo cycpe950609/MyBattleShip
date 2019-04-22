@@ -7,6 +7,7 @@ all: gamerunner
 
 AI:
 	$(CXX) $(CXXFLAG) -I$(GMAEINCLUDE) -shared AITemplate/Porting.cpp -o ${BUILDDIR}/a1.so
+	cp ${BUILDDIR}/a1.so ${BUILDDIR}/a2.so
 
 gamerunner: AI
 	$(CXX) $(CXXFLAG) -I$(GMAEINCLUDE) -pthread main.cpp -o ${BUILDDIR}/gamerunner -ldl

@@ -49,10 +49,10 @@ int main()
     }
 
     TA::BattleShipGame bgame(20);
-    std::cout<<"set AI"<<std::endl;
+
     bgame.setPlayer1( (AIInterface*) P1.getai() );
     bgame.setPlayer2( (AIInterface*) P2.getai() );
-    std::cout<<"end AI"<<std::endl;
+
 
     /*std::future_status status;
     std::future<int> val = std::async(std::launch::async, sum, 1);

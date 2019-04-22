@@ -5,13 +5,10 @@ BUILDDIR = ./build
 
 all: gamerunner
 
-libP1.so:
-	$(CXX) $(CXXFLAG) -I$(GMAEINCLUDE) -shared TEST/A.cpp -o ${BUILDDIR}/a1.so
+AI:
+	$(CXX) $(CXXFLAG) -I$(GMAEINCLUDE) -shared AITemplate/Porting.cpp -o ${BUILDDIR}/a1.so
 
-libP2.so:
-	$(CXX) $(CXXFLAG) -I$(GMAEINCLUDE) -shared TEST/B.cpp -o ${BUILDDIR}/a2.so
-
-gamerunner: libP1.so libP2.so
+gamerunner: AI
 	$(CXX) $(CXXFLAG) -I$(GMAEINCLUDE) -pthread main.cpp -o ${BUILDDIR}/gamerunner -ldl
 
 .PHONY: clean

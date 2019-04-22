@@ -5,7 +5,7 @@
 #include <memory>
 
 #include <BattleShipGame/Game.h>
-#include <BattleShipGame/Wrapper/Implement.h>
+#include <BattleShipGame/Wrapper/Porting.h>
 
 
 bool load(const char *libpath, Content &table)
@@ -29,7 +29,7 @@ bool load(const char *libpath, Content &table)
         return func_ptr;
     };
 
-    table.sum = reinterpret_cast<decltype(table.sum)>(tryLoad("sum"));
+    table.getai = reinterpret_cast<decltype(table.getai)>(tryLoad("getai"));
 
     return flag;
 }
@@ -42,15 +42,19 @@ int main()
         std::cout<<"P1 Fail";
         exit(-1);
     }
+    
     if( !load("./a2.so", P2) ){
         std::cout<<"P2 Fail";
         exit(-1);
     }
 
-    std::cout<< P1.sum() << std::endl;
-    std::cout<< P2.sum() << std::endl;
+    P1.ai = (AIInterface*) P1.getai();
+    P2.ai = (AIInterface*) P2.getai();
+    
+    std::cout<< P1.ai->sum() << std::endl;
+    std::cout<< P2.ai->sum() << std::endl;
 
-    BattleShipGame bgame(10,10);
+    TA::BattleShipGame bgame(10,10);
 
     /*std::future_status status;
     std::future<int> val = std::async(std::launch::async, sum, 1);

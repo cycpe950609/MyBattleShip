@@ -53,6 +53,7 @@ int main()
     bgame.setPlayer1( (AIInterface*) P1.getai() );
     bgame.setPlayer2( (AIInterface*) P2.getai() );
 
+    bgame.run();
 
     /*std::future_status status;
     std::future<int> val = std::async(std::launch::async, sum, 1);

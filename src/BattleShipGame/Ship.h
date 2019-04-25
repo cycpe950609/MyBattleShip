@@ -19,9 +19,9 @@ namespace TA
             for j = y, y+1, ..., y+size-1
         */
 
-        std::size_t size;
-        std::size_t x;
-        std::size_t y;
+        int size;
+        int x;
+        int y;
 
         ShipState state;
     };

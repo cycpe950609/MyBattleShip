@@ -55,17 +55,6 @@ int main()
 
     bgame.run();
 
-    /*std::future_status status;
-    std::future<int> val = std::async(std::launch::async, sum, 1);
-    status = val.wait_for(std::chrono::milliseconds(1000));
-
-    if( status != std::future_status::ready )
-    {
-        exit(-1);
-    }
-
-    auto rval = val.get();*/
-
     dlclose(P1.handle);
     dlclose(P2.handle);
     return 0;

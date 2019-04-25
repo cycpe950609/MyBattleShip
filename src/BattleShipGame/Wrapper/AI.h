@@ -3,10 +3,11 @@
 #include <BattleShipGame/Board.h>
 #include <BattleShipGame/Ship.h>
 
+#include <chrono>
 #include <vector>
 #include <utility>
 
-#define AI_ABI_VER 20190422
+#define AI_ABI_VER 20190426
 
 class AIInterface
 {
@@ -22,7 +23,7 @@ public:
         it should return how to put you ships
     */
 
-    virtual std::vector<std::pair<int,int>> init() = 0;
+    virtual std::vector<TA::Ship> init(int size, std::vector<int> ship_size, bool order, std::chrono::milliseconds runtime) = 0;
     /*
         for each each round, the host will call callbackEnemyReport to pass where the enemy hit
         first player in first round, vector size will be zero

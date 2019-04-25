@@ -5,8 +5,12 @@
 class AI : public AIInterface
 {
 public:
-    virtual std::vector<std::pair<int,int>> init() override
+    virtual std::vector<TA::Ship> init(int size ,std::vector<int> ship_size, bool order, std::chrono::milliseconds runtime) override
     {
+        (void)size;
+        (void)ship_size;
+        (void)order;
+        (void)runtime;
         return {};
     }
 

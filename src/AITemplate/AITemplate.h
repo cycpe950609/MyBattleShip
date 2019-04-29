@@ -1,9 +1,14 @@
 #pragma once
 
 #include <BattleShipGame/Wrapper/AI.h>
-
+#include <BattleShipGame/Ship.h>
+#include <algorithm>
+#include <random>
+#include <ctime>
 class AI : public AIInterface
 {
+    
+    std::vector<std::pair<int,int>> way;
 public:
     virtual std::vector<TA::Ship> init(int size ,std::vector<int> ship_size, bool order, std::chrono::milliseconds runtime) override
     {
@@ -11,6 +16,20 @@ public:
         (void)ship_size;
         (void)order;
         (void)runtime;
+        std::vector<TA::Ship> tmp;
+        tmp.push_back({3, 0,  0,TA::ShipState::Available});
+        tmp.push_back({3, 5,  0,TA::ShipState::Available});
+        tmp.push_back({5, 0,  5,TA::ShipState::Available});
+        tmp.push_back({7, 10, 10,TA::ShipState::Available});
+        
+        for(int i=0;i<size;++i)
+            for(int j=0;j<size;++j)
+                way.emplace_back(i,j);
+
+        std::mt19937 mt;
+        mt.seed( std::time(nullptr) + 7122 + (order?1:0) );
+        std::shuffle(way.begin(), way.end(), mt);
+        return tmp;
         return {};
     }
 
@@ -19,9 +38,11 @@ public:
 
     }
 
-    virtual int queryWhereToHit(TA::Board, int) override
+    virtual std::pair<int,int> queryWhereToHit(TA::Board) override
     {
-        return 0;
+        auto res = way.back();
+        way.pop_back();
+        return res;
     }
 
     virtual void callbackReportHit(bool)  override

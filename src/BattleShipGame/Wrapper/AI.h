@@ -34,7 +34,7 @@ public:
         for each ship, if the ship state is ShipState::Available,
         The host will use queryHowToMoveShip(Ship) to query how to move
     */
-    virtual int queryWhereToHit(TA::Board, int) = 0;
+    virtual std::pair<int,int> queryWhereToHit(TA::Board) = 0;
 
     /*
         it's be called after queryWhereToHit

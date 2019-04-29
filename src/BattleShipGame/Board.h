@@ -13,16 +13,17 @@ namespace TA
             Empty,
             Hit
         };
-        Board(std::size_t size)
+        Board(int size)
             :m_size(size)
             ,m_board(size, std::vector<State>(size, State::Unknown))
         {}
 
-        std::size_t size()  const { return m_size;  }
+        int size()  const { return m_size;  }
         auto& operator[](int x) { return m_board[x]; }
+        const auto& operator[](int x) const { return m_board[x]; }
 
     private:
-        std::size_t m_size;
+        int m_size;
         std::vector<std::vector<State>> m_board;
     };
 } // Namespace TA

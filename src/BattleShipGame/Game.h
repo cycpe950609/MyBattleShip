@@ -7,6 +7,7 @@
 #include <iostream>
 #include <cassert>
 #include <chrono>
+#include <cstdarg>
 #include <future>
 #include <type_traits>
 
@@ -22,7 +23,9 @@ namespace TA
             m_size(size),
             m_runtime_limit(runtime_limit),
             m_P1(nullptr),
-            m_P2(nullptr)
+            m_P2(nullptr),
+            m_P1Board(size),
+            m_P2Board(size)
         {
             gui = new ASCII;
             m_ship_size = {3,3,5,7};
@@ -36,16 +39,130 @@ namespace TA
             gui->title();
             if( !prepareState() ) return ;
 
+            updateGuiGame();
+            bool turn = true;
+
+            std::vector<std::pair<int,int>> last_report;
             while( !checkGameover() )
             {
+                bool res = false;
+                if( turn )
+                {
+                    res = attack(m_P1, m_P1Ship, m_P2Board, m_P2Ship, last_report);
+                }
+                else
+                {
+                    res = attack(m_P2, m_P2Ship, m_P1Board, m_P1Ship, last_report);
+                }
                 
+
+                if( !res)
+                    break;
+                updateGuiGame();
+                turn = !turn;
             }
         } 
 
    private:
+        void updateGuiGame()
+        {
+            gui->updateGame(m_P1Board, m_P1Ship, m_P2Board, m_P2Ship);
+        }
+
+        bool attack(AIInterface *ai, const std::vector<Ship> &myships, Board &board, std::vector<Ship> &ships, std::vector<std::pair<int,int>> &report)
+        {
+            const int pid = ai == m_P1 ? 1 : 2;
+            call(&AIInterface::callbackReportEnemy, ai, report);
+            report.clear();
+
+            for( Ship ship : myships )
+            {
+                if( ship.state == ShipState::Sink )
+                    continue;
+
+                std::pair<int,int> pos = call(&AIInterface::queryWhereToHit, ai, board);
+
+                putToGui("P%d Attack at (%d, %d)\n", pid, pos.first, pos.second);
+
+                if( !acceptPos(pos, board) )
+                    return false;
+
+                board[pos.first][pos.second] = applyAttack(pos, ships);
+                report.emplace_back(pos);
+
+                updateGuiGame();
+                if( checkGameover() ) 
+                    return true;
+                usleep(10000);
+            }
+            return true;
+        }
+
+        bool acceptPos(std::pair<int,int> pos, const Board &board)
+        {
+            int x = pos.first;
+            int y = pos.second;
+
+            if( x < 0 || board.size() <= x || y < 0 || board.size() <= y )
+            {
+                putToGui(" Attack invaild pos (%d, %d)\n", x, y);
+                return false;
+            }
+
+            if( board[x][y] != Board::State::Unknown )
+            {
+                putToGui(" Pos already attacked (%d, %d)\n", x, y);
+                return false;
+            }
+
+            return true;
+        }
+
+        Board::State applyAttack(std::pair<int,int> pos, std::vector<Ship> &ships)
+        {
+            int counter = 0;
+            int x = pos.first;
+            int y = pos.second;
+
+            for( Ship &ship : ships )
+            {
+                if( ship.x <= x && x < ship.x+ship.size && ship.y <= y && y < ship.y+ship.size )
+                {
+                    counter++;
+                    if( x == ship.x+ship.size/2 && y == ship.y+ship.size/2 )
+                        ship.state = ShipState::Sink;
+
+                    if( ship.state == ShipState::Sink ) continue;
+                    ship.state = ShipState::Hit;
+                }
+            }
+
+            if( counter > 1 )
+            {
+                putToGui("applyAttack Inner Error!\n");
+                throw;
+            }
+
+            if( counter == 0 ) return Board::State::Empty;
+            return Board::State::Hit;
+        }
 
         bool checkGameover()
         {
+            bool flag = true;
+
+            for( Ship s : m_P1Ship )
+                if( s.state != ShipState::Sink )
+                    flag = false;
+            if( flag )
+            {
+                putToGui("P2 win!\n");
+                return true;
+            }
+            for( Ship s : m_P2Ship )
+                if( s.state != ShipState::Sink )
+                    return false;
+            putToGui("P1 win!\n");
             return true;
         }
 
@@ -53,31 +170,31 @@ namespace TA
         {
             std::vector<Ship> initPos;
 
-            gui->appendText("P1 Prepareing...\n");
+            putToGui("P1 Prepareing...\n");
             initPos = call(&AIInterface::init, m_P1, m_size, m_ship_size, true, m_runtime_limit);
             if( !checkShipPosition(initPos) )
             {
-                gui->appendText("P1 Init() Invaild...\n");
+                putToGui("P1 Init() Invaild...\n");
                 return false;
             }
             for( auto &ship : initPos )
                 ship.state = ShipState::Available;
             m_P1Ship = initPos;
-            gui->appendText("Done.\n");
+            putToGui("Done.\n");
 
             initPos.clear();
 
-            gui->appendText("P2 Prepareing...\n");
+            putToGui("P2 Prepareing...\n");
             initPos = call(&AIInterface::init, m_P2, m_size, m_ship_size, false, m_runtime_limit);
             if( !checkShipPosition(initPos) )
             {
-                gui->appendText("P2 Init() Invaild...\n");
+                putToGui("P2 Init() Invaild...\n");
                 return false;
             }
             for( auto &ship : initPos )
                 ship.state = ShipState::Available;
             m_P2Ship = initPos;
-            gui->appendText("Done.\n");
+            putToGui("Done.\n");
             return true;
         }
 
@@ -116,6 +233,22 @@ namespace TA
             return val.get();
         }
 
+        void putToGui(const char *fmt, ...)
+        {
+            va_list args1;
+            va_start(args1, fmt);
+            va_list args2;
+            va_copy(args2, args1);
+            std::vector<char> buf(1+std::vsnprintf(nullptr, 0, fmt, args1));
+            va_end(args1);
+            std::vsnprintf(buf.data(), buf.size(), fmt, args2);
+            va_end(args2);
+
+            if( buf.back() == 0 ) buf.pop_back();
+            gui->appendText( std::string(buf.begin(), buf.end()) );
+        }
+
+
         bool checkAI(AIInterface *ptr) 
         {
             return ptr->abi() == AI_ABI_VER;
@@ -123,8 +256,12 @@ namespace TA
 
         bool checkShipPosition(std::vector<Ship> ships)
         {
+            
             if( ships.size() != m_ship_size.size() )
+            {
+                putToGui("Ship number not match : real %zu ,expect %zu,\n",ships.size(), m_ship_size.size());
                 return false;
+            }
             
             std::sort(ships.begin(), ships.end(), [](Ship a, Ship b){
                 return a.size < b.size; 
@@ -132,11 +269,15 @@ namespace TA
 
             std::vector<std::vector<int>> map(m_size, std::vector<int>(m_size));
 
-            int id = 0;
+            int id = -1;
             for( auto [size, x, y, state] : ships )
             {
-                if( size != m_ship_size[id++] )
+                id++;
+                if( size != m_ship_size[id] )
+                {
+                    putToGui("Ship %d size not match : real %zu ,expect %zu,\n", id, size, m_ship_size[id]);
                     return false;
+                }
 
                 for( int dx = 0 ; dx < size ; dx++ )
                     for( int dy = 0 ; dy < size ; dy++ )
@@ -144,9 +285,18 @@ namespace TA
                             int nx = x + dx;
                             int ny = y + dy;
 
-                            if( nx < 0 || nx >= m_size || ny < 0 || ny >= m_size || map[nx][ny] )
+                            if( nx < 0 || nx >= m_size || ny < 0 || ny >= m_size )
+                            {
+                                putToGui("Ship %d out of range at (%d,%d),\n", id, nx, ny);
                                 return false;
-                            map[nx][ny] = true;
+                            }
+
+                            if( map[nx][ny] != 0 )
+                            {
+                                putToGui("Ship %d and %d overlapping at (%d,%d),\n", id,  map[nx][ny]-1, nx, ny);
+                                return false;
+                            }
+                            map[nx][ny] = id + 1;
                         }
             }
             return true;
@@ -162,5 +312,7 @@ namespace TA
 
         std::vector<Ship> m_P1Ship;
         std::vector<Ship> m_P2Ship;
+        Board m_P1Board;
+        Board m_P2Board;
     } ;
 };

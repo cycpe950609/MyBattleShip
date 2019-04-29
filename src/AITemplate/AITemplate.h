@@ -17,10 +17,10 @@ public:
         (void)order;
         (void)runtime;
         std::vector<TA::Ship> tmp;
-        tmp.push_back({3, 0,  0,TA::ShipState::Available});
-        tmp.push_back({3, 5,  0,TA::ShipState::Available});
-        tmp.push_back({5, 0,  5,TA::ShipState::Available});
-        tmp.push_back({7, 10, 10,TA::ShipState::Available});
+        tmp.push_back({3, 0,  0,TA::Ship::State::Available});
+        tmp.push_back({3, 5,  0,TA::Ship::State::Available});
+        tmp.push_back({5, 0,  5,TA::Ship::State::Available});
+        tmp.push_back({7, 10, 10,TA::Ship::State::Available});
         
         for(int i=0;i<size;++i)
             for(int j=0;j<size;++j)

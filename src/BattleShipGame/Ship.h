@@ -4,12 +4,7 @@
 
 namespace TA
 {
-    enum class ShipState
-    {
-        Available,
-        Hit,
-        Sink
-    };
+    
 
     struct Ship
     {
@@ -19,11 +14,18 @@ namespace TA
             for j = y, y+1, ..., y+size-1
         */
 
+        enum class State
+        {
+            Available,
+            Hit,
+            Sink
+        };
+
         int size;
         int x;
         int y;
 
-        ShipState state;
+        Ship::State state;
     };
 }
 

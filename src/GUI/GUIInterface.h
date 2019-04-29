@@ -127,9 +127,9 @@ namespace TA
                             int y = dyBase + ship.y + j + dy;
 
                             charmap[x][y] = "#";
-                            if( ship.state == ShipState::Hit )
+                            if( ship.state == Ship::State::Hit )
                                 charmap[x][y] = "@";
-                            if( ship.state == ShipState::Sink )
+                            if( ship.state == Ship::State::Sink )
                                 charmap[x][y] = "%";
                         }
 

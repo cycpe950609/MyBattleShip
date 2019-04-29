@@ -31,7 +31,7 @@ public:
     virtual void callbackReportEnemy(std::vector<std::pair<int,int>>) = 0;
 
     /*
-        for each ship, if the ship state is ShipState::Available,
+        for each ship, if the ship state is Ship::State::Available,
         The host will use queryHowToMoveShip(Ship) to query how to move
     */
     virtual std::pair<int,int> queryWhereToHit(TA::Board) = 0;
@@ -43,7 +43,7 @@ public:
     virtual void callbackReportHit(bool) = 0;
 
     /*
-        for each ship, if the ship state is ShipState::Available,
+        for each ship, if the ship state is Ship::State::Available,
         The host will use queryHowToMoveShip(Ship) to query how to move
 
         this function should return (x, y) using std::pair

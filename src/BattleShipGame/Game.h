@@ -77,7 +77,7 @@ namespace TA
 
             for( Ship ship : myships )
             {
-                if( ship.state == ShipState::Sink )
+                if( ship.state == Ship::State::Sink )
                     continue;
 
                 std::pair<int,int> pos = call(&AIInterface::queryWhereToHit, ai, board);
@@ -130,10 +130,10 @@ namespace TA
                 {
                     counter++;
                     if( x == ship.x+ship.size/2 && y == ship.y+ship.size/2 )
-                        ship.state = ShipState::Sink;
+                        ship.state = Ship::State::Sink;
 
-                    if( ship.state == ShipState::Sink ) continue;
-                    ship.state = ShipState::Hit;
+                    if( ship.state == Ship::State::Sink ) continue;
+                    ship.state = Ship::State::Hit;
                 }
             }
 
@@ -152,7 +152,7 @@ namespace TA
             bool flag = true;
 
             for( Ship s : m_P1Ship )
-                if( s.state != ShipState::Sink )
+                if( s.state != Ship::State::Sink )
                     flag = false;
             if( flag )
             {
@@ -160,7 +160,7 @@ namespace TA
                 return true;
             }
             for( Ship s : m_P2Ship )
-                if( s.state != ShipState::Sink )
+                if( s.state != Ship::State::Sink )
                     return false;
             putToGui("P1 win!\n");
             return true;
@@ -178,7 +178,7 @@ namespace TA
                 return false;
             }
             for( auto &ship : initPos )
-                ship.state = ShipState::Available;
+                ship.state = Ship::State::Available;
             m_P1Ship = initPos;
             putToGui("Done.\n");
 
@@ -192,7 +192,7 @@ namespace TA
                 return false;
             }
             for( auto &ship : initPos )
-                ship.state = ShipState::Available;
+                ship.state = Ship::State::Available;
             m_P2Ship = initPos;
             putToGui("Done.\n");
             return true;

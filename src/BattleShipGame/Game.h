@@ -11,6 +11,8 @@
 #include <future>
 #include <type_traits>
 
+#include <unistd.h>
+
 namespace TA
 {
     class BattleShipGame
@@ -40,111 +42,14 @@ namespace TA
             if( !prepareState() ) return ;
 
             updateGuiGame();
-            bool turn = true;
 
-            std::vector<std::pair<int,int>> last_report;
-            while( !checkGameover() )
-            {
-                bool res = false;
-                if( turn )
-                {
-                    res = attack(m_P1, m_P1Ship, m_P2Board, m_P2Ship, last_report);
-                }
-                else
-                {
-                    res = attack(m_P2, m_P2Ship, m_P1Board, m_P1Ship, last_report);
-                }
-                
-
-                if( !res)
-                    break;
-                updateGuiGame();
-                turn = !turn;
-            }
+            //Todo: Play Game
         } 
 
    private:
         void updateGuiGame()
         {
             gui->updateGame(m_P1Board, m_P1Ship, m_P2Board, m_P2Ship);
-        }
-
-        bool attack(AIInterface *ai, const std::vector<Ship> &myships, Board &board, std::vector<Ship> &ships, std::vector<std::pair<int,int>> &report)
-        {
-            const int pid = ai == m_P1 ? 1 : 2;
-            call(&AIInterface::callbackReportEnemy, ai, report);
-            report.clear();
-
-            for( Ship ship : myships )
-            {
-                if( ship.state == Ship::State::Sink )
-                    continue;
-
-                std::pair<int,int> pos = call(&AIInterface::queryWhereToHit, ai, board);
-
-                putToGui("P%d Attack at (%d, %d)\n", pid, pos.first, pos.second);
-
-                if( !acceptPos(pos, board) )
-                    return false;
-
-                board[pos.first][pos.second] = applyAttack(pos, ships);
-                report.emplace_back(pos);
-
-                updateGuiGame();
-                if( checkGameover() ) 
-                    return true;
-                usleep(10000);
-            }
-            return true;
-        }
-
-        bool acceptPos(std::pair<int,int> pos, const Board &board)
-        {
-            int x = pos.first;
-            int y = pos.second;
-
-            if( x < 0 || board.size() <= x || y < 0 || board.size() <= y )
-            {
-                putToGui(" Attack invaild pos (%d, %d)\n", x, y);
-                return false;
-            }
-
-            if( board[x][y] != Board::State::Unknown )
-            {
-                putToGui(" Pos already attacked (%d, %d)\n", x, y);
-                return false;
-            }
-
-            return true;
-        }
-
-        Board::State applyAttack(std::pair<int,int> pos, std::vector<Ship> &ships)
-        {
-            int counter = 0;
-            int x = pos.first;
-            int y = pos.second;
-
-            for( Ship &ship : ships )
-            {
-                if( ship.x <= x && x < ship.x+ship.size && ship.y <= y && y < ship.y+ship.size )
-                {
-                    counter++;
-                    if( x == ship.x+ship.size/2 && y == ship.y+ship.size/2 )
-                        ship.state = Ship::State::Sink;
-
-                    if( ship.state == Ship::State::Sink ) continue;
-                    ship.state = Ship::State::Hit;
-                }
-            }
-
-            if( counter > 1 )
-            {
-                putToGui("applyAttack Inner Error!\n");
-                throw;
-            }
-
-            if( counter == 0 ) return Board::State::Empty;
-            return Board::State::Hit;
         }
 
         bool checkGameover()
@@ -248,7 +153,6 @@ namespace TA
             gui->appendText( std::string(buf.begin(), buf.end()) );
         }
 
-
         bool checkAI(AIInterface *ptr) 
         {
             return ptr->abi() == AI_ABI_VER;
@@ -315,4 +219,4 @@ namespace TA
         Board m_P1Board;
         Board m_P2Board;
     } ;
-};
+}

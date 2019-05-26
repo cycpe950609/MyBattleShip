@@ -7,7 +7,7 @@
 #include <vector>
 #include <utility>
 
-#define AI_ABI_VER 20190426
+#define AI_ABI_VER 20190527
 
 class AIInterface
 {
@@ -22,8 +22,8 @@ public:
         pass game information in the beginning
         it should return how to put you ships
     */
-
     virtual std::vector<TA::Ship> init(int size, std::vector<int> ship_size, bool order, std::chrono::milliseconds runtime) = 0;
+
     /*
         for each each round, the host will call callbackEnemyReport to pass where the enemy hit
         first player in first round, vector size will be zero
@@ -48,7 +48,7 @@ public:
 
         this function should return (x, y) using std::pair
 
-        return : new position of the ship
+        return : i-th element is new position of the i-th ship
     */
     virtual std::vector<std::pair<int,int>> queryHowToMoveShip(std::vector<TA::Ship>) = 0;
 };

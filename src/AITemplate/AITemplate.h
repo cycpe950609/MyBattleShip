@@ -5,9 +5,9 @@
 #include <algorithm>
 #include <random>
 #include <ctime>
+
 class AI : public AIInterface
 {
-    
     std::vector<std::pair<int,int>> way;
 public:
     virtual std::vector<TA::Ship> init(int size ,std::vector<int> ship_size, bool order, std::chrono::milliseconds runtime) override
@@ -30,7 +30,6 @@ public:
         mt.seed( std::time(nullptr) + 7122 + (order?1:0) );
         std::shuffle(way.begin(), way.end(), mt);
         return tmp;
-        return {};
     }
 
     virtual void callbackReportEnemy(std::vector<std::pair<int,int>>) override

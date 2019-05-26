@@ -7,7 +7,7 @@
 #include <algorithm>
 #include <vector>
 #include <set>
-#include <unistd.h>
+
 
 #include <BattleShipGame/Board.h>
 #include <BattleShipGame/Ship.h>

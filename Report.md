@@ -6,6 +6,9 @@
 g++-8 -std=c++17 -O2 -Wall -Wextra -fPIC -I./ -shared AITemplate/Porting.cpp -o ./build/a1.so
 ```
 
+## 請解釋 Game.h 裡面 ```call``` 函數的功能 (10%)
+
+
 ## AI Algorithm (20%)
 
 ( 請說明 AI 如何運作，進攻/防守的策略是什麼，實作時有遇到什麼困難，如何排除等等 )

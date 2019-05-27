@@ -7,11 +7,10 @@
 #include <vector>
 #include <utility>
 
-#define AI_ABI_VER 20190527
+#define AI_ABI_VER 20190528
 
 class AIInterface
 {
-    int a;
 public:
     AIInterface() = default;
     virtual ~AIInterface() = default;

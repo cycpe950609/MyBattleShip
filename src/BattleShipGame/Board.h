@@ -18,7 +18,7 @@ namespace TA
             ,m_board(size, std::vector<State>(size, State::Unknown))
         {}
 
-        int size()  const { return m_size;  }
+        int size() const { return m_size;  }
         auto& operator[](int x) { return m_board[x]; }
         const auto& operator[](int x) const { return m_board[x]; }
 

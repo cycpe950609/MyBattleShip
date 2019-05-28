@@ -12,10 +12,9 @@ class AI : public AIInterface
 public:
     virtual std::vector<TA::Ship> init(int size ,std::vector<int> ship_size, bool order, std::chrono::milliseconds runtime) override
     {
-        (void)size;
         (void)ship_size;
-        (void)order;
         (void)runtime;
+
         std::vector<TA::Ship> tmp;
         tmp.push_back({3, 0,  0,TA::Ship::State::Available});
         tmp.push_back({3, 5,  0,TA::Ship::State::Available});

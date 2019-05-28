@@ -11,8 +11,6 @@
 #include <future>
 #include <type_traits>
 
-#include <unistd.h>
-
 namespace TA
 {
     class BattleShipGame

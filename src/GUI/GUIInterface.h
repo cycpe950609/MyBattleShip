@@ -8,7 +8,6 @@
 #include <vector>
 #include <set>
 
-
 #include <BattleShipGame/Board.h>
 #include <BattleShipGame/Ship.h>
 

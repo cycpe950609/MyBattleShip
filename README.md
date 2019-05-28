@@ -17,32 +17,34 @@ I2P Final project.
 ## 配分
 
 50 % report
-    * 請獨立繳交。不要寫得太隨便就不會扣分，如果覺得技術問題無法寫得精闢簡潔，至少也每題 100 字左右意思一下。
+    * 不要寫得太隨便就不會扣分，如果覺得技術問題無法寫得精闢簡潔，至少也每題 100 字左右意思一下。
 
 20 % PK random AI
     * 正反方各 5 次，獲勝一次拿 3 分，到滿分為止。
 
-30 % team PK
+30 % team PK (視全班完成狀況調整)
     * 全班兩兩互打，正反方各打一次，獲勝者拿 1 分，到滿分為止。
 
-Bonus (請於 DEMO)
+Bonus (請 DEMO)
 
-1. 使用下面的參數 -Werror -Wextra -pedantic-errors 依舊能編譯你的程式。 ( 總分*1.1 )。
+1. 編譯時CPPFLAG 增加下面的參數 -Werror -Wextra -pedantic-errors 依舊能編譯你的程式。 ( 總分*1.1 )。
 2. 讓遊戲執行器更精緻 (介面更好，GUI，有其他功能...) ( 一項 5%，最多加 10% )。
 
 ## 重要時間表
 
 ### 5/31 上課分組
+
 * 每組 3~4 人 ( 請不要低於 3 人 )
 
 ### 6/24 10:00 Program deadline
+
 * Upload project (include all code, make file, script, README...) on ilms.
 * 建議當作 deadline 是 6/23 23:59，多的時間是給大家方便可以檢查上傳有無問題，不要用奇怪的理由 (ex 組長不見不能傳，網路太慢) 遲交。
 * 遲交 team PK 以 0 分計 。
  
 No late submit allow, or team PK score will be zero.
 
-### 6/25 demo & report deadline
+### 6/25 demo & report deadline (詳細時間再行宣布)
 
 * 未參與 Demo ，  PK random AI 以 0 分計。
 * 現場與 random AI 進行 PK 戰，對作品進行簡單介紹。

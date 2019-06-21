@@ -23,44 +23,32 @@ void StartScene::Initialize() {
 
 	//enter
 	Engine::ImageButton* btn;
-	btn = new Engine::ImageButton("welcome/dirt.png", "welcome/floor.png", halfW - 250, halfH / 2 , 500, 100);
+	btn = new Engine::ImageButton("welcome/dirt.png", "welcome/floor.png", halfW - 150, halfH / 2 + 425 , 300, 50);
 	btn->SetOnClickCallback(std::bind(&StartScene::ButtonOnClick, this, BTN_WELCOME));
 	AddNewControlObject(btn);
-	AddNewObject(new Engine::Label("Enter Game", "pirulen.ttf", 48, halfW, halfH  / 2+50, 0, 0, 0, 255, 0.5, 0.5));
-
-	//exit
-	btn = new Engine::ImageButton("welcome/dirt.png", "welcome/floor.png", halfW - 200, halfH / 2 + 150, 400, 100);
-	btn->SetOnClickCallback(std::bind(&StartScene::ButtonOnClick, this, BTN_EXIT));
-	AddNewControlObject(btn);
-	AddNewObject(new Engine::Label("Exit", "pirulen.ttf", 48, halfW, halfH / 2 + 200, 0, 0, 0, 255, 0.5, 0.5));
-
-
+	AddNewObject(new Engine::Label("Enter Game", "source.ttf", 30, halfW, halfH  / 2+450, 0, 0, 0, 255, 0.5, 0.5));
+	//Title
 	/*
-	int halfW = w / 2;
-	int halfH = h / 2;
-	AddNewObject(new Engine::Label("You Win!", "pirulen.ttf", 48, halfW, halfH / 2, 255, 255, 255, 255, 0.5, 0.5));
-	Engine::ImageButton* btn;
-	btn = new Engine::ImageButton("win/dirt.png", "win/floor.png", halfW - 200, halfH * 3 / 2 - 50, 400, 100);
-	btn->SetOnClickCallback(std::bind(&WinScene::BackOnClick, this, 2));
-	AddNewControlObject(btn);
-	AddNewObject(new Engine::Label("Back", "pirulen.ttf", 48, halfW, halfH * 3 / 2, 0, 0, 0, 255, 0.5, 0.5));
-	AudioHelper::PlayAudio("win.wav");*/
+	    puts(R"(    ____        __  __  __    _____ __    _     )");
+            puts(R"(   / __ )____ _/ /_/ /_/ /__ / ___// /_  (_)___ )");
+            puts(R"(  / __  / __ `/ __/ __/ / _ \\__ \/ __ \/ / __ \)");
+            puts(R"( / /_/ / /_/ / /_/ /_/ /  __/__/ / / / / / /_/ /)");
+            puts(R"(/_____/\__,_/\__/\__/_/\___/____/_/ /_/_/ .___/ )");
+            puts(R"(                                       /_/      )");
+	*/
+	AddNewObject(new Engine::Label(R"(    ____        __  __  __    _____ __    _     )", "source.ttf", 25, halfW, halfH + 200 - 300, 255 , 255 , 255 , 255, 0.5, 0.5));
+	AddNewObject(new Engine::Label(R"(   / __ )____ _/ /_/ /_/ /__ / ___// /_  (_)___ )", "source.ttf", 25, halfW, halfH + 200 - 270, 255 , 255 , 255 , 255, 0.5, 0.5));
+	AddNewObject(new Engine::Label(R"(  / __  / __ `/ __/ __/ / _ \\__ \/ __ \/ / __ \)", "source.ttf", 25, halfW, halfH + 200 - 240, 255 , 255 , 255 , 255, 0.5, 0.5));
+	AddNewObject(new Engine::Label(R"( / /_/ / /_/ / /_/ /_/ /  __/__/ / / / / / /_/ /)", "source.ttf", 25, halfW, halfH + 200 - 210, 255 , 255 , 255 , 255, 0.5, 0.5));
+	AddNewObject(new Engine::Label(R"(/_____/\__,_/\__/\__/_/\___/____/_/ /_/_/ .___/ )", "source.ttf", 25, halfW, halfH + 200 - 180, 255 , 255 , 255 , 255, 0.5, 0.5));
+	AddNewObject(new Engine::Label(R"(                                       /_/      )", "source.ttf", 25, halfW, halfH + 200 - 150, 255 , 255 , 255 , 255, 0.5, 0.5));
+
 }
-//void StartScene::Update(float deltaTime) {
-    /*
-	ticks += deltaTime;
-	if (ticks > 4 && ticks < 100 &&
-		dynamic_cast<PlayScene*>(Engine::GameEngine::GetInstance().GetScene("play"))->MapId == 2) {
-		ticks = 100;
-		AudioHelper::PlayBGM("happy.ogg");
-	}*/
-//}
 void StartScene::ButtonOnClick(int btnID) {
 	// Change to select scene.
 	
 	if(btnID == BTN_WELCOME)
-	    std::cout << "BtnClick\n";
-	    //Engine::GameEngine::GetInstance().ChangeScene("stage-select");
+	    Engine::GameEngine::GetInstance().ChangeScene("play");
 	//else if(btnID == BTN_EXIT)
 	//  Engine::GameEngine::GetInstance().destroy();
 }

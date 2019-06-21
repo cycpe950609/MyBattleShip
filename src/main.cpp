@@ -6,8 +6,9 @@
 
 #include <BattleShipGame/Game.h>
 #include <BattleShipGame/Wrapper/Content.h>
-#include "Init.hpp"
 #include "GameEngine.hpp"
+#include "StartScene.hpp"
+#include "PlayScene.hpp"
 
 bool load(const char *libpath, Content &table)
 {
@@ -54,10 +55,12 @@ int main()
     bgame.setPlayer1( (AIInterface*) P1.getai() );
     bgame.setPlayer2( (AIInterface*) P2.getai() );
 
-    InitGame();
-    bgame.run();
+    Engine::GameEngine& game =  Engine::GameEngine::GetInstance();
+    game.AddNewScene("start",new StartScene);
+    game.AddNewScene("play",new PlayScene(&bgame));
     Engine::GameEngine::GetInstance().Start("start", 60, 1600, 832);
 
+    //bgame.run();
     dlclose(P1.handle);
     dlclose(P2.handle);
     return 0;

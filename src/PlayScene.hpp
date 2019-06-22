@@ -3,6 +3,10 @@
 
 #include "IScene.hpp"
 #include <BattleShipGame/Game.h>
+#include <BattleShipGame/Board.h>
+#include <BattleShipGame/Ship.h>
+#include <vector>
+#include <string>
 
 class PlayScene final : public Engine::IScene
 {
@@ -21,7 +25,11 @@ class PlayScene final : public Engine::IScene
 	    NO_THING
 	};
 	static bool DebugMode;
-	TA::BattleShipGame* _bsgame;
+	TA::BattleShipGame *_bsgame;
+	void DrawOcean(int dx,int dy,int size);
+	void DrawShip(const std::vector<TA::Ship>& ships,int dx,int dy,std::string color);
+	void DrawSplitter(int dx,int dy,int size);
+	int BlockSize = 40;
     public:
 	PlayScene(TA::BattleShipGame *bsgame);
 	void Initialize() override;
@@ -31,6 +39,11 @@ class PlayScene final : public Engine::IScene
 	void OnMouseMove(int mx, int my) override;
 	void OnMouseUp(int button, int mx, int my) override;
 	void OnKeyDown(int keyCode) override;
+	
+	Engine::Group* Ocean;
+	Engine::Group* Ships;
+	Engine::Group* Hitted;
+
 };
 
 

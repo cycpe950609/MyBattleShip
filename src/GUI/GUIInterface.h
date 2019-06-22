@@ -82,7 +82,7 @@ namespace TA
     public:
         virtual void title() override
         {
-            cls();
+            //cls();
             puts(R"(    ____        __  __  __    _____ __    _     )");
             puts(R"(   / __ )____ _/ /_/ /_/ /__ / ___// /_  (_)___ )");
             puts(R"(  / __  / __ `/ __/ __/ / _ \\__ \/ __ \/ / __ \)");
@@ -93,13 +93,16 @@ namespace TA
 
         virtual void appendText(std::string str)
         {
+	    /*
             m_textbuf = str + m_textbuf;
             updateTextBuf();
             showText();
+	    */
         }
 
         virtual void updateGame(Board p1b, std::vector<Ship> p1s, Board p2b, std::vector<Ship> p2s)
         {
+	    /*
             std::string charmap[22][80];
             const int dY = 40;
 
@@ -163,6 +166,7 @@ namespace TA
                 std::putchar('\n');
             }
             gotoxy(GRAPH_HIGHT+TEXT_HIGHT+1, 0);
+	    */
         }
     };
     #undef ESC

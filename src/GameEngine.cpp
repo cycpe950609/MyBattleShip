@@ -17,6 +17,7 @@
 #include "LOG.hpp"
 #include "Point.hpp"
 #include "Resources.hpp"
+#include <iostream>
 
 namespace Engine {
 	void GameEngine::initAllegro5() {
@@ -173,7 +174,10 @@ namespace Engine {
 		al_destroy_display(display);
 		// Free all scenes.
 		for (const auto &pair : scenes)
+		{
+			std::cout << "Del Scenes\n" ;
 			delete pair.second;
+		}
 	}
 	void GameEngine::changeScene(const std::string& name) {
 		if (scenes.count(name) == 0)

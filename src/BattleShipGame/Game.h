@@ -10,6 +10,7 @@
 #include <cstdarg>
 #include <future>
 #include <type_traits>
+#include <iostream>
 
 namespace TA
 {
@@ -30,6 +31,8 @@ namespace TA
             gui = new ASCII;
             m_ship_size = {3,3,5,7};
         }
+	BattleShipGame(const BattleShipGame&) = delete;
+	BattleShipGame& operator=(const BattleShipGame&) = delete;
 
         void setPlayer1(AIInterface *ptr) { assert(checkAI(ptr)); m_P1 = ptr; }
         void setPlayer2(AIInterface *ptr) { assert(checkAI(ptr)); m_P2 = ptr; }
@@ -44,8 +47,26 @@ namespace TA
             //Todo: Play Game
         } 
 
+	//Set function pointer to PlayScene
+	/*void SetGUICall(UpdateGUI op)
+	{
+	     updategui = op;
+	}*/
+	typedef void (*UpdateHIT)();//TODO : pass what ?
+	void SetHITCall(UpdateHIT op)
+	{
+	     updatehit = op;
+	}
+	const Board &BoardRed  = m_P1Board;
+	const Board &BoardBlue = m_P2Board;
+        const std::vector<Ship> &ShipRed  = m_P1Ship;
+        const std::vector<Ship> &ShipBlue = m_P2Ship;
    private:
-        void updateGuiGame()
+	//typedef void (*UpdateGUI(Board p1b, std::vector<Ship> p1s, Board p2b, std::vector<Ship> p2s));
+	//UpdateGUI updategui;
+	UpdateHIT updatehit;
+
+        virtual void updateGuiGame()
         {
             gui->updateGame(m_P1Board, m_P1Ship, m_P2Board, m_P2Ship);
         }
@@ -136,7 +157,7 @@ namespace TA
             return val.get();
         }
 
-        void putToGui(const char *fmt, ...)
+        virtual void putToGui(const char *fmt, ...)
         {
             va_list args1;
             va_start(args1, fmt);

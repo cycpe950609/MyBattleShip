@@ -9,6 +9,7 @@
 #include "GameEngine.hpp"
 #include "StartScene.hpp"
 #include "PlayScene.hpp"
+#include <iostream>
 
 bool load(const char *libpath, Content &table)
 {
@@ -50,18 +51,19 @@ int main()
         exit(-1);
     }
 
-    TA::BattleShipGame bgame(20);
+    Engine::GameEngine& game =  Engine::GameEngine::GetInstance();
 
+    TA::BattleShipGame bgame(20);
     bgame.setPlayer1( (AIInterface*) P1.getai() );
     bgame.setPlayer2( (AIInterface*) P2.getai() );
-
-    Engine::GameEngine& game =  Engine::GameEngine::GetInstance();
+    game.AddNewScene("play", new PlayScene(&bgame));
     game.AddNewScene("start",new StartScene);
-    game.AddNewScene("play",new PlayScene(&bgame));
-    Engine::GameEngine::GetInstance().Start("start", 60, 1600, 832);
 
+    Engine::GameEngine::GetInstance().Start("start", 60, 1720, 1000);
+
+    std::cout << "End of Game" << std::endl;
     //bgame.run();
-    dlclose(P1.handle);
-    dlclose(P2.handle);
+    //dlclose(P1.handle);
+    //dlclose(P2.handle);
     return 0;
 }

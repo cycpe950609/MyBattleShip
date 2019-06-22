@@ -7,6 +7,7 @@
 #include <BattleShipGame/Ship.h>
 #include <vector>
 #include <string>
+#include "Slider.hpp"
 
 class PlayScene final : public Engine::IScene
 {
@@ -30,6 +31,9 @@ class PlayScene final : public Engine::IScene
 	void DrawShip(const std::vector<TA::Ship>& ships,int dx,int dy,std::string color);
 	void DrawSplitter(int dx,int dy,int size);
 	int BlockSize = 40;
+	int Step = 0;//which step is draw in the GameHistory
+	int SizeofHistory;
+	Slider *sliderHistory;
     public:
 	PlayScene(TA::BattleShipGame *bsgame);
 	void Initialize() override;
@@ -39,6 +43,7 @@ class PlayScene final : public Engine::IScene
 	void OnMouseMove(int mx, int my) override;
 	void OnMouseUp(int button, int mx, int my) override;
 	void OnKeyDown(int keyCode) override;
+	void HistorySlideOnValueChanged(float value);
 	
 	Engine::Group* Ocean;
 	Engine::Group* Ships;

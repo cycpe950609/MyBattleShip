@@ -14,6 +14,20 @@
 
 namespace TA
 {
+    struct GameState
+    {
+	Board BoardRed;
+	Board BoardBlue;
+	std::vector<Ship> ShipRed;
+	std::vector<Ship> ShipBlue;
+	enum HitWay
+	{
+	    Red2Blue,
+	    Blue2Red
+	};
+	HitWay hit;
+	GameState(Board b_red,Board b_blue,std::vector<Ship> s_red,std::vector<Ship> s_blue,HitWay _hit):BoardRed(b_red),BoardBlue(b_blue),ShipRed(s_red),ShipBlue(s_blue),hit(_hit){}; 
+    };
     class BattleShipGame
     {
     public:
@@ -37,13 +51,34 @@ namespace TA
         void setPlayer1(AIInterface *ptr) { assert(checkAI(ptr)); m_P1 = ptr; }
         void setPlayer2(AIInterface *ptr) { assert(checkAI(ptr)); m_P2 = ptr; }
 
+	std::vector<GameState> GameHistory;
+
         void run()
         {
             gui->title();
             if( !prepareState() ) return ;
 
             updateGuiGame();
-
+	    GameHistory.push_back(GameState(BoardRed,BoardBlue,ShipRed,ShipBlue,TA::GameState::Red2Blue));
+	    GameHistory.push_back(GameState(BoardRed,BoardBlue,ShipRed,ShipBlue,TA::GameState::Red2Blue));
+	    GameHistory.push_back(GameState(BoardRed,BoardBlue,ShipRed,ShipBlue,TA::GameState::Red2Blue));
+	    GameHistory.push_back(GameState(BoardRed,BoardBlue,ShipRed,ShipBlue,TA::GameState::Red2Blue));
+	    GameHistory.push_back(GameState(BoardRed,BoardBlue,ShipRed,ShipBlue,TA::GameState::Red2Blue));
+	    GameHistory.push_back(GameState(BoardRed,BoardBlue,ShipRed,ShipBlue,TA::GameState::Red2Blue));
+	    GameHistory.push_back(GameState(BoardRed,BoardBlue,ShipRed,ShipBlue,TA::GameState::Red2Blue));
+	    GameHistory.push_back(GameState(BoardRed,BoardBlue,ShipRed,ShipBlue,TA::GameState::Red2Blue));
+	    GameHistory.push_back(GameState(BoardRed,BoardBlue,ShipRed,ShipBlue,TA::GameState::Red2Blue));
+	    GameHistory.push_back(GameState(BoardRed,BoardBlue,ShipRed,ShipBlue,TA::GameState::Red2Blue));
+	    GameHistory.push_back(GameState(BoardRed,BoardBlue,ShipRed,ShipBlue,TA::GameState::Red2Blue));
+	    GameHistory.push_back(GameState(BoardRed,BoardBlue,ShipRed,ShipBlue,TA::GameState::Red2Blue));
+	    GameHistory.push_back(GameState(BoardRed,BoardBlue,ShipRed,ShipBlue,TA::GameState::Red2Blue));
+	    GameHistory.push_back(GameState(BoardRed,BoardBlue,ShipRed,ShipBlue,TA::GameState::Red2Blue));
+	    GameHistory.push_back(GameState(BoardRed,BoardBlue,ShipRed,ShipBlue,TA::GameState::Red2Blue));
+	    GameHistory.push_back(GameState(BoardRed,BoardBlue,ShipRed,ShipBlue,TA::GameState::Red2Blue));
+	    GameHistory.push_back(GameState(BoardRed,BoardBlue,ShipRed,ShipBlue,TA::GameState::Red2Blue));
+	    GameHistory.push_back(GameState(BoardRed,BoardBlue,ShipRed,ShipBlue,TA::GameState::Red2Blue));
+	    GameHistory.push_back(GameState(BoardRed,BoardBlue,ShipRed,ShipBlue,TA::GameState::Red2Blue));
+	    GameHistory.push_back(GameState(BoardRed,BoardBlue,ShipRed,ShipBlue,TA::GameState::Red2Blue));
             //Todo: Play Game
         } 
 

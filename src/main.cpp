@@ -56,6 +56,8 @@ int main()
     TA::BattleShipGame bgame(20);
     bgame.setPlayer1( (AIInterface*) P1.getai() );
     bgame.setPlayer2( (AIInterface*) P2.getai() );
+    bgame.run();
+
     game.AddNewScene("play", new PlayScene(&bgame));
     game.AddNewScene("start",new StartScene);
 

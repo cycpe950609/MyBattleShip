@@ -27,8 +27,8 @@ Slider::Slider(float x, float y, float w, float h) :
 void Slider::Draw() const {
 	// TODO 4 (1/6): Draw all components.
 	Bar.Draw();
-	End1.Draw();
-	End2.Draw();
+	//End1.Draw();
+	//End2.Draw();
 	Engine::ImageButton::Draw();
 
 }
@@ -40,8 +40,9 @@ void Slider::SetOnValueChangedCallback(std::function<void(float value)> onValueC
 void Slider::SetValue(float value) {
 	// TODO 4 (3/6): Call 'OnValueChangedCallback' when value changed. Can imitate ImageButton's 'OnClickCallback'.
 	//               Also move the slider along the bar, to the corresponding position.
-	OnValueChangedCallback(value);
-	Position.x = x + w*value;
+	float new_value = value <= 1.0 ? value : 1.0;
+	OnValueChangedCallback(new_value);
+	Position.x = x + w*new_value;
 }
 void Slider::OnMouseDown(int button, int mx, int my) {
 	// TODO 4 (4/6): Set 'Down' to true if mouse is in the slider.

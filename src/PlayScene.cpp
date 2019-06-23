@@ -76,7 +76,7 @@ void PlayScene::Update(float deltaTime)
      if(Playing)
 	time += deltaTime;
      //std::cout << "UpdateTest" << deltaTime << std::endl;
-     if(time >= 1.0)//1s
+     if(time >= 2.0)//2s
      {
 	  time = 0;
 	  this->Step++;//go ahead step in History every 2s
@@ -87,8 +87,10 @@ void PlayScene::Update(float deltaTime)
 	  }
 	  //TODO: Add Bullet
 	  sliderHistory->SetValue(((float)Step+1)/((float)SizeofHistory));
-	  UpdateHitted(_bsgame->GameHistory[Step].BoardRed,100,40);//Red
-	  UpdateHitted(_bsgame->GameHistory[Step].BoardRed,100,40 + _bsgame->BoardRed.size()*BlockSize + BlockSize);//Blue
+	    
+	  Hitted->Clear();
+	  UpdateHitted(_bsgame->GameHistory[Step].BoardRed,40,100);//Red
+	  UpdateHitted(_bsgame->GameHistory[Step].BoardRed,40 + _bsgame->BoardRed.size()*BlockSize + BlockSize,100);//Blue
      }
      UpdateShip(_bsgame->GameHistory[Step].ShipRed,_bsgame->GameHistory[Step].ShipBlue,100,40,100,40 + _bsgame->BoardRed.size()*BlockSize + BlockSize);
 }
@@ -151,14 +153,13 @@ bool PlayScene::ShouldUpdateShip(std::vector<TA::Ship>& new_ships,std::vector<TA
 }
 void PlayScene::UpdateHitted(TA::Board& board,int dx,int dy)
 {
-     Hitted->Clear();
-     for(int y = 0;y < board.size() ;y++)
- 	for(int x = 0; x < board.size();x++)
+     for(int i = 0;i < board.size() ;i++)
+ 	for(int j = 0; j < board.size();j++)
 	{
-	    if(board[y][x] == TA::Board::State::Hit)
-		Hitted->AddNewObject(new Engine::Image("play/hit.png",y * BlockSize + dy, x * BlockSize + dx, BlockSize, BlockSize));
-	    else if(board[y][x] == TA::Board::State::Empty)
-		Hitted->AddNewObject(new Engine::Image("play/empty.png",y * BlockSize + dy, x * BlockSize + dx, BlockSize, BlockSize));
+	    if(board[j][i] == TA::Board::State::Hit)
+		Hitted->AddNewObject(new Engine::Image("play/hit.png", i * BlockSize + dx , j * BlockSize +dy , BlockSize, BlockSize));
+	    else if(board[j][i] == TA::Board::State::Empty)
+		Hitted->AddNewObject(new Engine::Image("play/empty.png", i * BlockSize + dx , j * BlockSize + dy , BlockSize, BlockSize));
 	}
 	    
 

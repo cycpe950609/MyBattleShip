@@ -5,6 +5,9 @@
 #include <algorithm>
 #include <random>
 #include <ctime>
+#include <vector>
+
+#define B_SIZE 20
 
 class AI : public AIInterface
 {
@@ -36,11 +39,18 @@ public:
 
     }
 
-    virtual std::pair<int,int> queryWhereToHit(TA::Board) override
+    virtual std::pair<int,int> queryWhereToHit(TA::Board board) override
     {
-        auto res = way.back();
-        way.pop_back();
-        return res;
+	for(int i = 0; i < B_SIZE; i++)
+        {
+            for(int j = 0; j < B_SIZE; j++)
+            {
+                if(board[i][j] == TA::Board::State::Unknown)
+                {
+                    return {i, j};
+                }
+            }
+        }
     }
 
     virtual void callbackReportHit(bool)  override
@@ -48,8 +58,12 @@ public:
 
     }
 
-    virtual std::vector<std::pair<int,int>> queryHowToMoveShip(std::vector<TA::Ship>) override
+    virtual std::vector<std::pair<int,int>> queryHowToMoveShip(std::vector<TA::Ship> ships) override
     {
-        return {};
+	std::vector<std::pair<int,int>> coor;
+        for( auto s : ships ){
+            coor.push_back({s.x, s.y});
+        }
+        return coor;
     }
 };

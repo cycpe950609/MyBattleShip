@@ -59,6 +59,7 @@ namespace TA
             if( !prepareState() ) return ;
 
             updateGuiGame();
+	    //GameHistory.push_back(GameState(m_P1Board,m_P2Board,m_P1Ship,m_P2Ship,TA::GameState::Red2Blue));
 	    /*{{{
 	    GameHistory.push_back(GameState(BoardRed,BoardBlue,ShipRed,ShipBlue,TA::GameState::Red2Blue));
 	    m_P1Board[2][2]	= TA::Board::State::Hit;
@@ -160,6 +161,7 @@ namespace TA
                         call(&AIInterface::callbackReportHit, m_P1, Ishit);
                         atkcoor.push_back(atkin);
                         updateGuiGame();
+		//	GameHistory.push_back(GameState(BoardRed,BoardBlue,ShipRed,ShipBlue,TA::GameState::Red2Blue));
 
                         //check gameover
                         bool win = checkGameover();
@@ -215,6 +217,7 @@ namespace TA
                         call(&AIInterface::callbackReportHit, m_P2, Ishit);
                         atkcoor.push_back(atkin);
                         updateGuiGame();
+		//	GameHistory.push_back(GameState(BoardRed,BoardBlue,ShipRed,ShipBlue,TA::GameState::Red2Blue));
 
                         //check gameover
                         bool win = checkGameover();
@@ -247,6 +250,7 @@ namespace TA
                             i->y = movcoor[id].second;
                         }
                         updateGuiGame();
+		//	GameHistory.push_back(GameState(BoardRed,BoardBlue,ShipRed,ShipBlue,TA::GameState::Red2Blue));
                     }
                     else{
                         putToGui("P1 lose!\n");
@@ -267,6 +271,7 @@ namespace TA
                             i->y = movcoor[id].second;
                         }
                         updateGuiGame();
+		//	GameHistory.push_back(GameState(BoardRed,BoardBlue,ShipRed,ShipBlue,TA::GameState::Red2Blue));
                     }
                     else{
                         putToGui("P2 lose!\n");
@@ -274,22 +279,31 @@ namespace TA
                     }
                 }
 
+		if(nowplaying == 1)
+		    GameHistory.push_back(GameState(m_P1Board,m_P2Board,m_P1Ship,m_P2Ship,TA::GameState::Red2Blue));
+		else
+		    GameHistory.push_back(GameState(m_P1Board,m_P2Board,m_P1Ship,m_P2Ship,TA::GameState::Blue2Red));
+
                 if(end){
                     putToGui("Game end!\n");
+		    //GameHistory.push_back(GameState(m_P1Board,m_P2Board,m_P1Ship,m_P2Ship,TA::GameState::Red2Blue));
                     break;
                 }
 
                 //change session
                 if(nowplaying == 1){
                     putToGui("Change to P2!\n");
+		    //GameHistory.push_back(GameState(m_P1Board,m_P2Board,m_P1Ship,m_P2Ship,TA::GameState::Red2Blue));
                     nowplaying = 2;
                 }
                 else{
                     putToGui("Change to P1!\n");
+		    //GameHistory.push_back(GameState(m_P1Board,m_P2Board,m_P1Ship,m_P2Ship,TA::GameState::Red2Blue));
                     nowplaying = 1;
                 }
 
-	    GameHistory.push_back(GameState(BoardRed,BoardBlue,ShipRed,ShipBlue,TA::GameState::Red2Blue));
+
+
             }/*}}}*/
 
 

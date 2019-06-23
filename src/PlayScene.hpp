@@ -27,7 +27,6 @@ class PlayScene final : public Engine::IScene
 	    HITTED,
 	    NO_THING
 	};
-	static bool DebugMode;
 	TA::BattleShipGame *_bsgame;
 	void InitOcean(int dx,int dy,int size);
 	void InitShip(const std::vector<TA::Ship>& ships,int dx,int dy,std::string color);
@@ -37,11 +36,10 @@ class PlayScene final : public Engine::IScene
 	//rx : position for left-up point of board of RedShip
 	//bx : position for left-up point of board of BlueShip
 	bool ShouldUpdateShip(std::vector<TA::Ship>& new_ships,std::vector<TA::Ship>& last_ships);
-	void UpdateHitted(TA::Board& board,int dx,int dy);
-	void UpdateDebug(const TA::Board& board,int dx,int dy);
+	void UpdateHitted(TA::Board& board,int dx,int dy,std::string color);
 	void AddShip(TA::Ship add_ship,int dx,int dy,std::string color);
 	int BlockSize = 40;
-	int Step = 0;//which step is draw in the GameHistory
+	static int Step;//which step is draw in the GameHistory
 	int SizeofHistory;
 	Slider *sliderHistory;
 	std::vector<TA::Ship> last_ships_red;

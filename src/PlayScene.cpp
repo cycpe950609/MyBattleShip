@@ -15,7 +15,7 @@
 #include <cmath>
 using namespace TA;
 
-bool PlayScene::DebugMode = false;
+int PlayScene::Step = 0;
 bool PlayScene::Playing = true;//If it is playing the GameHistory
 PlayScene::PlayScene(TA::BattleShipGame *bsgame)
 {
@@ -26,7 +26,6 @@ void PlayScene::Initialize()
     AddNewObject(Ocean = new Engine::Group());
     AddNewObject(Ships = new Engine::Group());
     AddNewObject(Turrents = new Engine::Group());
-    AddNewObject(Debug = new Engine::Group());
     AddNewObject(Hitted = new Engine::Group());
     InitOcean(100,40,_bsgame->BoardRed.size());
     InitSplitter(100,40 + _bsgame->BoardRed.size()*BlockSize,_bsgame->BoardRed.size());
@@ -59,16 +58,22 @@ void PlayScene::Initialize()
     btn->SetOnClickCallback(std::bind(&PlayScene::ButtonOnClick, this, BTN_GOTOEND));
     AddNewControlObject(btn);
     AddNewObject(new Engine::Label(">>", "source.ttf", 35,btnPy + 25,100+_bsgame->BoardRed.size()*BlockSize + BlockSize - 10 + 20, 0, 0, 0, 255, 0.5, 0.5));
+
+    //
+    Step = 0;
 }
 void PlayScene::HistorySlideOnValueChanged(float value) 
 {
     int real_step = floor(value*SizeofHistory) - 1;//every time we setValue of Slider in Step+1, so real_step are value*sizeofHistory - 1
-    if((float)real_step - value*SizeofHistory >= 0.5)//4捨5入(Is it used ?)
-    	real_step++;
+    if(real_step + 0.5 <= value*SizeofHistory - 1)//4捨5入
+	real_step++;
+    //std::cout << value << " " << SizeofHistory << " " <<  floor(value*SizeofHistory) << std::endl;
+    //if((float)real_step - value*SizeofHistory >= 0.5)//4捨5入(Is it used ?)
+    //	real_step++;
     if(real_step < 0) real_step = 0;
     if(real_step > SizeofHistory) real_step = SizeofHistory;
     Step = real_step;
-    //std::cout << "Step: " << real_step << std::endl;
+    //std::cout << "Set Step: " << real_step << std::endl;
 }
 void PlayScene::Update(float deltaTime)
 {
@@ -76,21 +81,23 @@ void PlayScene::Update(float deltaTime)
      if(Playing)
 	time += deltaTime;
      //std::cout << "UpdateTest" << deltaTime << std::endl;
-     if(time >= 2.0)//2s
+     if(time >= 1.0)//2s
      {
 	  time = 0;
-	  this->Step++;//go ahead step in History every 2s
+	  Step = Step + 1;//go ahead step in History every 2s
+	  //std::cout << "Step :" << this->Step << std::endl;
 	  if(Step >= _bsgame->GameHistory.size())
 	  {
+	      //std::cout << "Out of Range" << std::endl;
 	      Step = _bsgame->GameHistory.size();
-	      Playing = false;
 	  }
 	  //TODO: Add Bullet
 	  sliderHistory->SetValue(((float)Step+1)/((float)SizeofHistory));
-	    
+
+
 	  Hitted->Clear();
-	  UpdateHitted(_bsgame->GameHistory[Step].BoardRed,40,100);//Red
-	  UpdateHitted(_bsgame->GameHistory[Step].BoardRed,40 + _bsgame->BoardRed.size()*BlockSize + BlockSize,100);//Blue
+	  UpdateHitted(_bsgame->GameHistory[Step].BoardRed,40,100,"red");//Red
+	  UpdateHitted(_bsgame->GameHistory[Step].BoardBlue,40 + _bsgame->BoardRed.size()*BlockSize + BlockSize,100,"blue");//Blue
      }
      UpdateShip(_bsgame->GameHistory[Step].ShipRed,_bsgame->GameHistory[Step].ShipBlue,100,40,100,40 + _bsgame->BoardRed.size()*BlockSize + BlockSize);
 }
@@ -151,22 +158,20 @@ bool PlayScene::ShouldUpdateShip(std::vector<TA::Ship>& new_ships,std::vector<TA
 	     return true;
      return false;
 }
-void PlayScene::UpdateHitted(TA::Board& board,int dx,int dy)
+void PlayScene::UpdateHitted(TA::Board& board,int dx,int dy,std::string color)
 {
      for(int i = 0;i < board.size() ;i++)
  	for(int j = 0; j < board.size();j++)
 	{
 	    if(board[j][i] == TA::Board::State::Hit)
-		Hitted->AddNewObject(new Engine::Image("play/hit.png", i * BlockSize + dx , j * BlockSize +dy , BlockSize, BlockSize));
+	    {
+		Hitted->AddNewObject(new Engine::Image(std::string("play/") + color +  std::string("-hit.png"), i * BlockSize + dx , j * BlockSize +dy , BlockSize, BlockSize));
+	    }
 	    else if(board[j][i] == TA::Board::State::Empty)
-		Hitted->AddNewObject(new Engine::Image("play/empty.png", i * BlockSize + dx , j * BlockSize + dy , BlockSize, BlockSize));
+		Hitted->AddNewObject(new Engine::Image(std::string("play/empty.png"), i * BlockSize + dx , j * BlockSize + dy , BlockSize, BlockSize));
 	}
 	    
 
-}
-void PlayScene::UpdateDebug(const TA::Board& board,int dx,int dy)
-{
-     
 }
 void PlayScene::AddShip(TA::Ship add_ship,int dx,int dy,std::string color)
 {
@@ -232,8 +237,6 @@ void PlayScene::OnMouseUp(int button, int mx, int my)
 }
 void PlayScene::OnKeyDown(int keyCode)
 {
-     if(keyCode == ALLEGRO_KEY_TAB)
-	 DebugMode = !DebugMode;
 }
 void PlayScene::ButtonOnClick(int btnID)
 {

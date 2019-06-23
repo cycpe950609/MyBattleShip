@@ -9,6 +9,8 @@
 #include <string>
 #include "Slider.hpp"
 
+#define BTN_PLAYPAUSE 0
+#define BTN_GOTOEND 1
 class PlayScene final : public Engine::IScene
 {
     private:
@@ -35,8 +37,8 @@ class PlayScene final : public Engine::IScene
 	//rx : position for left-up point of board of RedShip
 	//bx : position for left-up point of board of BlueShip
 	bool ShouldUpdateShip(std::vector<TA::Ship>& new_ships,std::vector<TA::Ship>& last_ships);
+	void UpdateHitted(TA::Board& board,int dx,int dy);
 	void UpdateDebug(const TA::Board& board,int dx,int dy);
-	void ClearShip(TA::Ship del_ship,int dx,int dy,std::string color);
 	void AddShip(TA::Ship add_ship,int dx,int dy,std::string color);
 	int BlockSize = 40;
 	int Step = 0;//which step is draw in the GameHistory
@@ -44,6 +46,7 @@ class PlayScene final : public Engine::IScene
 	Slider *sliderHistory;
 	std::vector<TA::Ship> last_ships_red;
 	std::vector<TA::Ship> last_ships_blue;
+	static bool Playing;
     public:
 	PlayScene(TA::BattleShipGame *bsgame);
 	void Initialize() override;
@@ -54,9 +57,12 @@ class PlayScene final : public Engine::IScene
 	void OnMouseUp(int button, int mx, int my) override;
 	void OnKeyDown(int keyCode) override;
 	void HistorySlideOnValueChanged(float value);
-	
+	void ButtonOnClick(int btnID);
+
 	Engine::Group* Ocean;
 	Engine::Group* Ships;
+	Engine::Group* Turrents;
+	Engine::Group* Hitted;
 	Engine::Group* Debug;
 
 };

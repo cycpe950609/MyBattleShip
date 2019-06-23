@@ -8,8 +8,6 @@
 class Slider : public Engine::ImageButton {
 private:
 	Image Bar;
-	Image End1;
-	Image End2;
 	std::function<void(float value)> OnValueChangedCallback;
 	float value = 0;
 	float x,y,w,h;

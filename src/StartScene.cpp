@@ -23,7 +23,7 @@ void StartScene::Initialize() {
 
 	//enter
 	Engine::ImageButton* btn;
-	btn = new Engine::ImageButton("welcome/dirt.png", "welcome/floor.png", halfW - 150, halfH / 2 + 425 , 300, 50);
+	btn = new Engine::ImageButton("other/mouse-out.png", "other/mouse-in.png", halfW - 150, halfH / 2 + 425 , 300, 50);
 	btn->SetOnClickCallback(std::bind(&StartScene::ButtonOnClick, this, BTN_WELCOME));
 	AddNewControlObject(btn);
 	AddNewObject(new Engine::Label("Enter Game", "source.ttf", 30, halfW, halfH  / 2+450, 0, 0, 0, 255, 0.5, 0.5));

@@ -27,13 +27,23 @@ class PlayScene final : public Engine::IScene
 	};
 	static bool DebugMode;
 	TA::BattleShipGame *_bsgame;
-	void DrawOcean(int dx,int dy,int size);
-	void DrawShip(const std::vector<TA::Ship>& ships,int dx,int dy,std::string color);
-	void DrawSplitter(int dx,int dy,int size);
+	void InitOcean(int dx,int dy,int size);
+	void InitShip(const std::vector<TA::Ship>& ships,int dx,int dy,std::string color);
+	void InitSplitter(int dx,int dy,int size);
+	void InitDebug(const TA::Board& board,int dx,int dy);
+	void UpdateShip(std::vector<TA::Ship>& ships_red,std::vector<TA::Ship>& ships_blue ,int rx,int ry,int bx,int by);
+	//rx : position for left-up point of board of RedShip
+	//bx : position for left-up point of board of BlueShip
+	bool ShouldUpdateShip(std::vector<TA::Ship>& new_ships,std::vector<TA::Ship>& last_ships);
+	void UpdateDebug(const TA::Board& board,int dx,int dy);
+	void ClearShip(TA::Ship del_ship,int dx,int dy,std::string color);
+	void AddShip(TA::Ship add_ship,int dx,int dy,std::string color);
 	int BlockSize = 40;
 	int Step = 0;//which step is draw in the GameHistory
 	int SizeofHistory;
 	Slider *sliderHistory;
+	std::vector<TA::Ship> last_ships_red;
+	std::vector<TA::Ship> last_ships_blue;
     public:
 	PlayScene(TA::BattleShipGame *bsgame);
 	void Initialize() override;
@@ -47,7 +57,7 @@ class PlayScene final : public Engine::IScene
 	
 	Engine::Group* Ocean;
 	Engine::Group* Ships;
-	Engine::Group* Hitted;
+	Engine::Group* Debug;
 
 };
 

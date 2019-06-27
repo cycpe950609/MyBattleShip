@@ -1,6 +1,14 @@
 Battle Ship
 ========
 
+組員:
+1. 蔡定芳   : 這個repo的主人 ：） 
+2. 王鈞	    : 
+3. 文逸雲   : [Yveswen111](https://github.com/Yveswen111)
+4. 黃淳侑   :
+
+
+
 I2P Final project.
 
 ## 目標

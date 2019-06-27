@@ -8,7 +8,6 @@ g++-8 -std=c++17 -O2 -Wall -Wextra -fPIC -I./ -shared AITemplate/Porting.cpp -o 
 
 ## 請解釋 Game.h 裡面 ```call``` 函數的功能 (5%)
 
-
 ## 請解釋什麼是 Shared library，為何需要 Shared library ，在 Windows 系統上有類似的東西嗎？(10%)
 
 

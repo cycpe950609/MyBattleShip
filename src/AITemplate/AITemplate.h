@@ -84,10 +84,15 @@ public:
 
     virtual void callbackReportEnemy(std::vector<std::pair<int,int>> attack) override
     {
+    		std::cout << "=======================================\n"; 
+    		for(auto it : attack)
+    			std::cout << it.first << " " << it.second << std::endl;
+    		std::cout << "=======================================\n"; 
 		enemyNum = attack.size();
 		for (int i = 0; i < enemyNum; i++) {
 			int a = attack[i].first;
 			int b = attack[i].second;
+		myBoard[a][b] = true;
 				 if (a <= 6 			&& b <= 6			 ) map[0]++;
 			else if (a <= 6 			&& (6 < b && b <= 13)) map[1]++;
 			else if (a <= 6 			&& 			13  < b  ) map[2]++;
@@ -178,9 +183,10 @@ public:
                 }
                 continue;
             }
-            for(int i = -3; i < 4; i++)
+            for(int k = 0;k <= 3;k++)
+            for(int i = -k; i <= k; i++)
             {
-                for(int j = -3; j < 4; j++)
+                for(int j = -k; j <= k; j++)
                 {
                     if(hit_pt.front().x + i >= 0 && hit_pt.front().x + i < B_SIZE && hit_pt.front().y + j >= 0 && hit_pt.front().y + j < B_SIZE)
                     {
@@ -316,9 +322,13 @@ public:
 		bool board[20][20];
 		for (int i = 0; i < 20; i++) {
 			for (int j = 0; j < 20; j++) {
-				board[i][j] = false;
+				board[i][j] = myBoard[i][j];
+				std::cout << myBoard[i][j] << " ";
 			}
+			std::cout << std::endl;
 		} 
+		
+		
 		for (int i = 0; i < Movable.size(); i++) {
 			for (int u = 0; u < Movable[i].size; u++) {
 				for (int v = 0; v < Movable[i].size; v++) {
@@ -326,7 +336,7 @@ public:
 						flag = false;
 						break;
 					}
-					else board[Move[i].first+u][Move[i].second+v] == true;
+					else board[Move[i].first+u][Move[i].second+v] = true;
 				}
 			}
 		}

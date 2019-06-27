@@ -238,7 +238,7 @@ namespace TA
                 std::vector<std::pair<int, int>> movcoor;
                 if(nowplaying == 1){
                     movcoor = call(&AIInterface::queryHowToMoveShip, m_P1, m_P1Ship);
-                    bool valid = checkMoveValid(movcoor, m_P1Ship);
+                    bool valid = checkMoveValid(movcoor, m_P1Ship, m_P1Board);
                     if(valid){
                         //move ship
                         int id = -1;
@@ -259,7 +259,7 @@ namespace TA
                 }
                 else{
                     movcoor = call(&AIInterface::queryHowToMoveShip, m_P2, m_P2Ship);
-                    bool valid = checkMoveValid(movcoor, m_P2Ship);
+                    bool valid = checkMoveValid(movcoor, m_P2Ship, m_P2Board);
                     if(valid){
                         //move ship
                         int id = -1;
@@ -328,7 +328,7 @@ namespace TA
 	//UpdateGUI updategui;
 	UpdateHIT updatehit;
 	
-	bool checkMoveValid(std::vector<std::pair<int ,int>> coor, std::vector<Ship> ships)
+	bool checkMoveValid(std::vector<std::pair<int ,int>> coor, std::vector<Ship> ships, Board board)
         {
             if( ships.size() != coor.size() )
             {
@@ -363,6 +363,10 @@ namespace TA
                         if( nx < 0 || nx >= m_size || ny < 0 || ny >= m_size )
                         {
                             putToGui("Ship %d out of range at (%d,%d),\n", id, nx, ny);
+                            return false;
+                        }
+                        if(board[nx][ny] == Board::State::Empty){
+                            putToGui("Ship %d tried to move to non-Unknown tile at (%d,%d),\n", id, nx, ny);
                             return false;
                         }
                         if( map[nx][ny] != 0 )

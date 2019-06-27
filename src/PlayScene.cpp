@@ -81,7 +81,7 @@ void PlayScene::Update(float deltaTime)
      if(Playing)
 	time += deltaTime;
      //std::cout << "UpdateTest" << deltaTime << std::endl;
-     if(time >= 1.0)//2s
+     if(time >= 0.5)//2s
      {
 	  time = 0;
 	  Step = Step + 1;//go ahead step in History every 2s
